@@ -1,6 +1,6 @@
-##Assignment 2 - RPC (Remote Procedure Calls)
+## Assignment 2 - RPC (Remote Procedure Calls)
 
-#Basic Requirements ( 1-7 points )
+# Basic Requirements ( 1-7 points )
 The client should be able to:
 
 Ask the user for input & send it to server
