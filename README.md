@@ -1,4 +1,4 @@
-# Assignment 2 - RPC (Remote Procedure Calls)
+## Assignment 2 - RPC (Remote Procedure Calls)
 
 Basic functionality:
 
