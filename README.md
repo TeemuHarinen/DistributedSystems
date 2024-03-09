@@ -1,7 +1,8 @@
 # Assignment 2 - RPC (Remote Procedure Calls)
 
-## Basic Requirements ( 1-7 points )
-The client should be able to:
+Basic functionality:
+
+Client
 
 Ask the user for input & send it to server
 - Topic, Text, and timestamp for the note
@@ -9,7 +10,7 @@ Ask the user for input & send it to server
 - If not, a new XML entry will be made
 - Get the contents of the XML database based on given topic
 
-The server should be able to:
+Server
 
 Process the client's input
 
