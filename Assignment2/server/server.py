@@ -11,24 +11,30 @@ except ET.ParseError:
     tree = ET.ElementTree(root)
 
 def save_data(topic, text, timestamp):
-    # Check if topic exists
-    for child in root:
-        if child.tag == topic:
-            # Append data
-            ET.SubElement(child, "note", timestamp=timestamp).text = text
-            tree.write("database.xml")
-            return "Data saved successfully"
-    # If topic does not exist, create new entry
-    new_topic = ET.SubElement(root, topic)
-    ET.SubElement(new_topic, "note", timestamp=timestamp).text = text
-    tree.write("database.xml")
-    return "Data saved successfully"
+    try:
+        # Check if topic exists
+        for child in root:
+            if child.tag == topic:
+                # Append data
+                ET.SubElement(child, "note", timestamp=timestamp).text = text
+                tree.write("database.xml")
+                return "Data saved successfully"
+        # If topic does not exist, create new entry
+        new_topic = ET.SubElement(root, topic)
+        ET.SubElement(new_topic, "note", timestamp=timestamp).text = text
+        tree.write("database.xml")
+        return "Data saved successfully"
+    except Exception as e:
+        return f"An error occurred while saving data: {str(e)}"
 
 def get_data(topic):
-    for child in root:
-        if child.tag == topic:
-            return ET.tostring(child, encoding='utf8').decode('utf8')
-    return "Topic not found"
+    try:
+        for child in root:
+            if child.tag == topic:
+                return ET.tostring(child, encoding='utf8').decode('utf8')
+        return "Topic not found"
+    except Exception as e:
+        return f"An error occurred while retrieving data: {str(e)}"
 
 def query_wikipedia(search_term):
     response = requests.get(

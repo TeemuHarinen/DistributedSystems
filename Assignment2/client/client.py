@@ -12,7 +12,12 @@ class Client:
     def send_data(self):
         try:
             topic = input("Enter topic: ")
+            if not topic:
+                raise ValueError("Topic cannot be empty")
             text = input("Enter text: ")
+            if not text:
+                raise ValueError("Text cannot be empty")
+            
             timestamp = datetime.now().isoformat()
             print(self.server.save_data(topic, text, timestamp))
         except Exception as e:
