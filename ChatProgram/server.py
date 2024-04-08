@@ -61,13 +61,24 @@ def find_user(userToFind):
 # Main function to handle client messages
 def handle(client):
     while True:
-        message=client.recv(1024).decode('utf-8')
-        nickname, text = message.split(':')
-        if text == '/exit':
-            print(f"{nickname} disconnected")
-            broadcast_to_channel(find_channel(client), f"{nickname} has disconnected", client) # Notify channel of disconnect
-            client.close()
+        try:
+            message=client.recv(1024).decode('utf-8')
+            nickname, text = message.split(':')
+            if text == '/exit':
+                print(f"{nickname} disconnected")
+                broadcast_to_channel(find_channel(client), f"{nickname} has disconnected", client)
+                client.close()
+                break
+        except ConnectionResetError:
+            # Find the client's nickname
+            nickname = next((name for name, c in nicknames if c == client), None)
+            # Remove the client from the nicknames list
+            nicknames.remove((nickname, client))
+            
+            broadcast_to_channel(find_channel(client), f"{nickname} has disconnected", client)
+            # Break the loop to end the thread for this client
             break
+
         if text.startswith('/message '): # Private message
             _, target, message = text.split(' ', 2) #Parse the target and message
             print(target)
@@ -83,7 +94,7 @@ def handle(client):
         elif text.startswith('/leave'):
             remove_from_channel(client, channel, nickname)
         else:
-            if find_channel(client) == None:
+            if find_channel(client) == 0:
                 client.send("You are not in a channel, type /join (channel) to join".encode('utf-8'))
             else:
                 broadcast_to_channel(find_channel(client), message, client)
